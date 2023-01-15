@@ -27,6 +27,9 @@ public class Character : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
+    //队伍中的站位
+    public int postionInCamp = -1;
+
     private float pos = 0;
     public float Pos
     {

@@ -37,98 +37,55 @@ namespace Assets.Script
             }
         }
 
-        public List<Character> members = new List<Character>();
+        public Dictionary<int, Character> members = new Dictionary<int, Character>();
 
         public Camp (){}
 
-        public float Speed
+        public virtual void AddChara(Character chara, int position)
         {
-            get
-            {
-                if(members.Count <= 0)
-                {
-                    return 0;
-                }
-                return GameMode.GetGameMode().charaMap[LeaderCharacterUID].Speed;
-            }
-        }
-        public float Weight
-        {
-            get
-            {
-                if (members.Count <= 0)
-                {
-                    return 0;
-                }
-                return GameMode.GetGameMode().charaMap[LeaderCharacterUID].Weight;
-            }
+            members.Add(position, chara);
+            chara.postionInCamp = position;
+            chara.Depth = characterDepths[position];
         }
 
-        public virtual void AddChara(Character chara)
+        public virtual void DeleteChara(int pos)
         {
-            members.Add(chara);
-        }
-
-        public virtual void DeleteChara(int UID)
-        {
-            for(int i = 0; i < members.Count; i++)
-            {
-                if(members[i].CharacterUID == UID)
-                {
-                    members.RemoveAt(i);
-                }
-            }
-        }
-        public virtual void DeleteChara(Character chara)
-        {
-            members.Remove(chara);
+            members.Remove(pos);
         }
 
         public virtual void ReCalculPos()
         {
-            for(int i = 0; i < members.Count; i++)
-            {
-                Character member = members[i];
-
-                if (member.IsInFight)
-                {
-                    float pos = Pos + characterOffset[i];
-                    member.Pos = pos;
-                    float dep = characterDepths[i];
-                    member.Depth = dep;
-                }
-            }
+            
         }
-        public virtual void CheckInFight()
+        
+        //是否已就位，就位的才能进行战斗
+        public bool IsInFight(int pos)
         {
-
+            var chara = members[pos];
+            if(chara.Pos == Pos + characterOffset[i])
+            {
+                return true;
+            }
+            return false;
         }
 
     }
     public class OurCamp : Camp
     {
-        public override void CheckInFight()
+        public override void ReCalculPos()
         {
             for (int i = 0; i < members.Count; i++)
             {
                 Character member = members[i];
 
-                if(member.Pos > Pos + InFightOffset)
+                if (member.Pos < Pos + characterOffset[i])
                 {
-                    member.IsInFight = true;
+                    member.Pos = member.Speed * Time.deltaTime + member.Pos;
                 }
-            }
-        }
-
-        public void UpdateNotInFightPos()
-        {
-            for (int i = 0; i < members.Count; i++)
-            {
-                Character member = members[i];
-
-                if (!member.IsInFight)
+                else
                 {
-                    member.Pos += member.Speed * Time.deltaTime;
+                    float pos = Pos + characterOffset[i];
+                    member.Pos = pos;
                 }
             }
         }
@@ -136,9 +93,7 @@ namespace Assets.Script
         // Update is called once per frame
         public void Update()
         {
-            CheckInFight();
             ReCalculPos();
-            UpdateNotInFightPos();
         }
     }
 }

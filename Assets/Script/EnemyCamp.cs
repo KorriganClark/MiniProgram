@@ -5,29 +5,20 @@ namespace Assets.Script
 {
     public class EnemyCamp : Camp
     {
-
-        public override void CheckInFight()
+        public override void ReCalculPos()
         {
             for (int i = 0; i < members.Count; i++)
             {
                 Character member = members[i];
 
-                if (member.Pos < Pos + InFightOffset)
+                if (member.Pos > Pos + characterOffset[i])
                 {
-                    member.IsInFight = true;
+                    member.Pos =  -member.Speed * Time.deltaTime + member.Pos;
                 }
-            }
-        }
-
-        public void UpdateNotInFightPos()
-        {
-            for (int i = 0; i < members.Count; i++)
-            {
-                Character member = members[i];
-
-                if (!member.IsInFight)
+                else
                 {
-                    member.Pos -= member.Speed * Time.deltaTime;
+                    float pos = Pos + characterOffset[i];
+                    member.Pos = pos;
                 }
             }
         }
@@ -35,9 +26,7 @@ namespace Assets.Script
         // Update is called once per frame
         public void Update()
         {
-            CheckInFight();
             ReCalculPos();
-            UpdateNotInFightPos();
         }
     }
 }

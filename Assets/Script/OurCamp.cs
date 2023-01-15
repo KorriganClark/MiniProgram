@@ -64,7 +64,7 @@ namespace Assets.Script
             Character target;
             if (members.TryGetValue(pos, out target))
             {
-                if (target.Pos == Pos + characterOffset[pos])
+                if (target.Pos == Pos + characterOffset[pos] && target.Depth == characterDepths[pos])
                 {
                     return true;
                 }
@@ -84,10 +84,10 @@ namespace Assets.Script
 
         public Character GetTargetRamdom(int dis)
         {
-            if(members.Count <= 0)
+            if(members.Count <= 0 || dis <= 0)
                 return null;
             int front = -1;
-            for(int i = 0; i< MaxCount; i++)
+            for(int i = 0; i < MaxCount; i++)
             {
                 if(GetFightingChara(i) != null)
                 {
@@ -117,6 +117,17 @@ namespace Assets.Script
     {
         public override void ReCalculPos()
         {
+            Character target;
+            while(!members.TryGetValue(0,out target))
+            {
+                var temp = new Dictionary<int, Character>(members);
+                members.Clear();
+                foreach (var pair in temp)
+                {
+                    members[pair.Key - 1] = pair.Value;
+                }
+            }
+
             foreach (var pair in members)
             {
                 Character member = pair.Value;
@@ -129,6 +140,19 @@ namespace Assets.Script
                 {
                     float pos = Pos + characterOffset[index];
                     member.Pos = pos;
+                }
+
+                if (member.Depth < characterDepths[index] - member.Speed * Time.deltaTime)
+                {
+                    member.Depth += member.Speed * Time.deltaTime * 0.2f;
+                }
+                else if (member.Depth > characterDepths[index] + member.Speed * Time.deltaTime)
+                {
+                    member.Depth -= member.Speed * Time.deltaTime * 0.2f;
+                }
+                else
+                {
+                    member.Depth = characterDepths[index];
                 }
             }
         }

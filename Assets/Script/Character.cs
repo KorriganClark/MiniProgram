@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
-    public AnimationClip IdleClip;
+    public AnimationClip idleClip;
     public AnimationClip walkClip;
     public AnimationClip attackClip;
     public List<AnimationClip> skillClips;
@@ -89,6 +89,9 @@ public class Character : MonoBehaviour
     }
 
 
+    private float walkClipTime;
+    private float idleClipTime;
+    private float attackClipTime;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -96,6 +99,15 @@ public class Character : MonoBehaviour
         {
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
         }
+        AnimatorOverrideController overrideController = new AnimatorOverrideController();
+        overrideController.runtimeAnimatorController = animator.runtimeAnimatorController;
+        overrideController["Walk"] = walkClip;
+        overrideController["Idle"] = idleClip;
+        overrideController["Attack"] = attackClip;
+        walkClipTime = walkClip.length;
+        idleClipTime = idleClip.length;
+        attackClipTime = attackClip.length;
+        animator.runtimeAnimatorController = overrideController;
     }
 
     float stateTime = 0;
@@ -146,7 +158,7 @@ public class Character : MonoBehaviour
         else if(State == 2)//¹¥»÷
         {
             stateTime = stateTime + Time.deltaTime;
-            if (stateTime > 1)
+            if (stateTime > attackClipTime)
             {
                 State = 0;
                 stateTime = 0;

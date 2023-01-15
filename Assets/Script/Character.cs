@@ -29,6 +29,11 @@ public class Character : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
+    public AnimationClip IdleClip;
+    public AnimationClip walkClip;
+    public AnimationClip attackClip;
+    public List<AnimationClip> skillClips;
+
     public List<AnimationClip> clips;
 
     //队伍中的站位

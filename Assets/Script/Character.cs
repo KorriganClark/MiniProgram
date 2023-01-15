@@ -136,7 +136,7 @@ public class Character : MonoBehaviour
         animator = GetComponent<Animator>();
         if (IsEnemy)
         {
-            gameObject.transform.Rotate(new Vector3(0, 180, 0));
+            //gameObject.transform.Rotate(new Vector3(0, 180, 0));
         }
         AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         overrideController.runtimeAnimatorController = animator.runtimeAnimatorController;

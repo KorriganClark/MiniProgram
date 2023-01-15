@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9057647608531718067, guid: 0222a2bc823963548a0901c8dc074aa3,
+  m_Sprite: {fileID: 2381670650686036931, guid: a00205d88a204204e8ba589e342d73dd,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,10 +123,10 @@ MonoBehaviour:
   AttackDamage: 10
   Deffend: 2
   AttackInterval: 1
-  idleClip: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
-  walkClip: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
-  attackClip: {fileID: 7400000, guid: 7f7676b2927d09b4994f945fb5293f69, type: 2}
-  deadClip: {fileID: 7400000, guid: f7cfa78fd0ea56f49ba5a4c21a685691, type: 2}
+  idleClip: {fileID: 7400000, guid: 421a7e999c73dd64a8b0e6f3a81c0e32, type: 2}
+  walkClip: {fileID: 7400000, guid: 98d4d0466633be042a0841f39e3c45e1, type: 2}
+  attackClip: {fileID: 7400000, guid: d7bb063fe45bd8644993eac48fe51ccd, type: 2}
+  deadClip: {fileID: 7400000, guid: df379e67234a06e408bc333c51c02a12, type: 2}
   skillClips: []
   AttackDis: 1
   currentHP: 0

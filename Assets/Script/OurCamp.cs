@@ -109,17 +109,18 @@ namespace Assets.Script
         public override void ReCalculPos()
         {
             Character target;
-            if(members.Count <= 0)
+            if (members.Count <= 0)
             {
                 return;
             }
-            while(!members.TryGetValue(0,out target))
+            while (!members.TryGetValue(0, out target))
             {
                 var temp = new Dictionary<int, Character>(members);
                 members.Clear();
                 foreach (var pair in temp)
                 {
                     members[pair.Key - 1] = pair.Value;
+                    pair.Value.postionInCamp = pair.Key - 1;
                 }
             }
 
@@ -131,23 +132,22 @@ namespace Assets.Script
                     continue;
                 }
                 int index = pair.Key;
-                if (member.Pos < Pos + characterOffset[index])
+                if (member.Pos < Pos + characterOffset[index] - member.Speed * Time.deltaTime)
                 {
-                    member.Pos = member.Speed * Time.deltaTime + member.Pos;
+                    member.Pos += member.Speed * Time.deltaTime;
                 }
                 else
                 {
-                    float pos = Pos + characterOffset[index];
-                    member.Pos = pos;
+                    member.Pos = Pos + characterOffset[index];
                 }
-
-                if (member.Depth < characterDepths[index] - member.Speed * Time.deltaTime)
+                float deltaOffset = Time.deltaTime * member.Speed * Mathf.Abs(member.Depth - characterDepths[index]) / (member.Pos - Pos - characterOffset[index]);
+                if (member.Depth < characterDepths[index] - deltaOffset)
                 {
-                    member.Depth += member.Speed * Time.deltaTime * 0.2f;
+                    member.Depth += deltaOffset;
                 }
-                else if (member.Depth > characterDepths[index] + member.Speed * Time.deltaTime)
+                else if (member.Depth > characterDepths[index] + deltaOffset)
                 {
-                    member.Depth -= member.Speed * Time.deltaTime * 0.2f;
+                    member.Depth -= deltaOffset;
                 }
                 else
                 {

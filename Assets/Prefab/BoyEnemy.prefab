@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5817628676749859492}
   - component: {fileID: 5817628676749859515}
-  - component: {fileID: 5817628676749859514}
   - component: {fileID: 5817628676749859493}
-  - component: {fileID: 5605967916851317868}
+  - component: {fileID: 6688376230665159041}
   m_Layer: 0
   m_Name: BoyEnemy
   m_TagString: Untagged
@@ -84,25 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &5817628676749859514
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5817628676749859513}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: da9c785237d675542a9b46eaf55dfb8b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5817628676749859493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,24 +99,31 @@ MonoBehaviour:
   AttackAuido: {fileID: 0}
   CharacterUID: 0
   IsEnemy: 1
-  Speed: 5
+  Speed: 1
   MaxHealth: 100
-  Attack: 10
+  AttackDamage: 10
   Deffend: 2
-  Weight: 5
-  WeaponId: 0
-  WalkState: 0
-  animator: {fileID: 5817628676749859514}
-  IsInFight: 0
---- !u!114 &5605967916851317868
-MonoBehaviour:
+  AttackInterval: 1
+  AttackDis: 1
+  State: 0
+  characterAnimation: {fileID: 0}
+  clips: []
+  postionInCamp: -1
+--- !u!111 &6688376230665159041
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5817628676749859513}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c981291a597f3438b6807eae5bc8ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: f7cfa78fd0ea56f49ba5a4c21a685691, type: 2}
+  - {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
+  - {fileID: 7400000, guid: f7cfa78fd0ea56f49ba5a4c21a685691, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

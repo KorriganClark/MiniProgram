@@ -29,6 +29,8 @@ public class Character : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
+    public List<AnimationClip> clips;
+
     //队伍中的站位
     public int postionInCamp = -1;
 
@@ -95,14 +97,22 @@ public class Character : MonoBehaviour
 
     public void Attack()
     {
+        animator.SetBool("attacking", true);
+        Debug.Log("Attack!");
 
     }
     public void Idle()
     {
-
+        //animator.Set
+        animator.SetBool("walking", false);
+        animator.SetBool("attacking", false);
+   
+        Debug.Log("Idle!");
     }
     public void Walk()
     {
+        animator.SetBool("walking", true);
+        Debug.Log("Walk!");
 
     }
 

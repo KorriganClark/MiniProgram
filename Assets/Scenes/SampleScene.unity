@@ -877,7 +877,6 @@ MonoBehaviour:
   InFightOffset: 2
   MaxCount: 5
   Pos: 0
-  members: []
 --- !u!114 &1807408016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -905,7 +904,6 @@ MonoBehaviour:
   InFightOffset: -2
   MaxCount: 5
   Pos: 0
-  members: []
 --- !u!1 &2050116295
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,7 +1018,7 @@ PrefabInstance:
     - target: {fileID: 5817628676749859513, guid: 26862bc7f43ce81418993ae50de8dc39,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26862bc7f43ce81418993ae50de8dc39, type: 3}

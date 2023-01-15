@@ -34,8 +34,6 @@ public class Character : MonoBehaviour
     public AnimationClip attackClip;
     public List<AnimationClip> skillClips;
 
-    public List<AnimationClip> clips;
-
     //队伍中的站位
     public int postionInCamp = -1;
 
@@ -99,11 +97,11 @@ public class Character : MonoBehaviour
         {
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
         }
-        AnimatorOverrideController overrideController = new AnimatorOverrideController();
+        AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         overrideController.runtimeAnimatorController = animator.runtimeAnimatorController;
         overrideController["Walk"] = walkClip;
-        overrideController["Idle"] = idleClip;
-        overrideController["Attack"] = attackClip;
+        overrideController["PlayerIdle"] = idleClip;
+        overrideController["Attacking"] = attackClip;
         walkClipTime = walkClip.length;
         idleClipTime = idleClip.length;
         attackClipTime = attackClip.length;

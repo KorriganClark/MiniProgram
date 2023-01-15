@@ -661,7 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf348d41babd8c4887c60ce943b178c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharaID: 1
+  CharaID: 2
 --- !u!114 &1029933030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,6 +835,7 @@ MonoBehaviour:
   CharacterPrefab:
   - {fileID: 5817628676749859513, guid: 26862bc7f43ce81418993ae50de8dc39, type: 3}
   - {fileID: 5817628676749859513, guid: 0485ceed2d8f8684f8282e036547cb99, type: 3}
+  - {fileID: 5817628676749859513, guid: dfa04d4935f34444cbea3c26d6622f30, type: 3}
   NowCharaIndex: 0
 --- !u!4 &1807408014
 Transform:

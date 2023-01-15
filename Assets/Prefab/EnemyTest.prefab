@@ -118,7 +118,7 @@ MonoBehaviour:
   WalkAudio: {fileID: 0}
   AttackAuido: {fileID: 0}
   CharacterUID: 0
-  IsEnemy: 0
+  IsEnemy: 1
   Speed: 1
   MaxHealth: 100
   AttackDamage: 10
@@ -127,8 +127,8 @@ MonoBehaviour:
   AttackDis: 1
   State: 0
   animator: {fileID: 5817628676749859514}
-  idleClip: {fileID: 0}
-  walkClip: {fileID: 0}
+  idleClip: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
+  walkClip: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
   attackClip: {fileID: 7400000, guid: 7f7676b2927d09b4994f945fb5293f69, type: 2}
   skillClips: []
   clips: []

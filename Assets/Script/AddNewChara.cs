@@ -7,10 +7,10 @@ namespace Assets.Script
     {
 
         public int CharaID;
-
+        public int Pos;
         public void Click()
         {
-            GameMode.GetGameMode().SpawnNewChara(CharaID, 0);
+            GameMode.GetGameMode().SpawnNewChara(CharaID, Pos);
         }
     }
 }

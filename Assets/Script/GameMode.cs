@@ -46,6 +46,7 @@ namespace Assets.Script
             GameObject newTarget = Instantiate(CharacterPrefab[CharacterId]);
             Character chara = newTarget.GetComponent<Character>();
             charaMap[NowCharaIndex] = chara;
+            chara.CharacterUID = NowCharaIndex ++;
             if (chara.IsEnemy)
             {
                 if (enemyCamp.IsFull)
@@ -67,7 +68,34 @@ namespace Assets.Script
                 ourCamp.AddChara(chara, Pos);
             }
         }
-       
+
+        public void DestroyCharacter(int UID)
+        {
+            var target = charaMap[UID];
+            if (target)
+            {
+                if (target.IsEnemy)
+                {
+                    enemyCamp.members.Remove(target.postionInCamp);
+                }
+                else
+                {
+                    ourCamp.members.Remove(target.postionInCamp);
+                }
+
+                DestroyImmediate(target.gameObject);
+            }
+        }
+
+        public void ApplyBuff(Buff buff)
+        {
+            switch (buff.type)
+            {
+                case BuffType.Damage:
+                    BuffMgr.DealAttack(buff);
+                    break;
+            }
+        }
 
         // Update is called once per frame
         void Update()

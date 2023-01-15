@@ -116,15 +116,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkAudio: {fileID: 0}
   AttackAuido: {fileID: 0}
-  CharacterUID: 0
   IsEnemy: 0
   Speed: 1
   MaxHealth: 100
-  Attack: 10
+  AttackDamage: 10
   Deffend: 2
-  Weight: 5
-  WeaponId: 0
-  WalkState: 0
+  AttackInterval: 1
+  idleClip: {fileID: 7400000, guid: 36a12133e9c8f3a4b9d8155654af230d, type: 2}
+  walkClip: {fileID: 7400000, guid: f7cfa78fd0ea56f49ba5a4c21a685691, type: 2}
+  attackClip: {fileID: 7400000, guid: 7f7676b2927d09b4994f945fb5293f69, type: 2}
+  deadClip: {fileID: 7400000, guid: 3e53190666c972041948b09ffdd123b4, type: 2}
+  skillClips: []
+  AttackDis: 3
+  currentHP: 0
+  currentAttackDamage: 0
+  currentDeffend: 0
+  CharacterUID: 0
+  State: 0
   animator: {fileID: 5817628676749859514}
   postionInCamp: -1
-  IsInFight: 0

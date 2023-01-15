@@ -7,32 +7,40 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    
+
+    
+
+    //用于编辑的属性
     public AudioClip WalkAudio;
     public AudioClip AttackAuido;
-
-    [HideInInspector]
-    public int CharacterUID;
-
     public bool IsEnemy = false;
     public float Speed = 1;
     public float MaxHealth = 100;
     public float AttackDamage = 10;
     public float Deffend = 2;
     public float AttackInterval = 1;
-
+    public AnimationClip idleClip;
+    public AnimationClip walkClip;
+    public AnimationClip attackClip;
+    public AnimationClip deadClip;
+    public List<AnimationClip> skillClips;
     [InspectorName("攻击距离")]
     public int AttackDis = 1;
 
-    // 0 静止 1 行走 2 攻击
+    //运行时属性
+    public float currentHP;
+    public float currentAttackDamage;
+    public float currentDeffend;
+
+
+    public int CharacterUID;
+    // 0 静止 1 行走 2 攻击 3 死亡
     [HideInInspector]
     public int State = 0;
     [HideInInspector]
     public Animator animator;
 
-    public AnimationClip idleClip;
-    public AnimationClip walkClip;
-    public AnimationClip attackClip;
-    public List<AnimationClip> skillClips;
 
     //队伍中的站位
     public int postionInCamp = -1;
@@ -86,12 +94,45 @@ public class Character : MonoBehaviour
         }
     }
 
+    public Camp ownerCamp
+    {
+        get
+        {
+            if (IsEnemy)
+            {
+                return GameMode.GetGameMode().enemyCamp;
+            }
+            else
+            {
+                return GameMode.GetGameMode().ourCamp;
+            }
+        }
+    }
+
+    public Camp otherCamp
+    {
+        get
+        {
+            if (!IsEnemy)
+            {
+                return GameMode.GetGameMode().enemyCamp;
+            }
+            else
+            {
+                return GameMode.GetGameMode().ourCamp;
+            }
+        }
+    }
+
+    private GameMode gameMode;
 
     private float walkClipTime;
     private float idleClipTime;
     private float attackClipTime;
+    private float deadClipTime;
     private void Awake()
     {
+        gameMode = GameMode.GetGameMode();
         animator = GetComponent<Animator>();
         if (IsEnemy)
         {
@@ -102,38 +143,84 @@ public class Character : MonoBehaviour
         overrideController["Walk"] = walkClip;
         overrideController["PlayerIdle"] = idleClip;
         overrideController["Attacking"] = attackClip;
+        overrideController["Dead"] = deadClip;
         walkClipTime = walkClip.length;
         idleClipTime = idleClip.length;
         attackClipTime = attackClip.length;
+        deadClipTime = deadClip.length;
         animator.runtimeAnimatorController = overrideController;
+    }
+    private void Start()
+    {
+        currentHP = MaxHealth;
+        currentAttackDamage = AttackDamage;
+        currentDeffend = Deffend;
     }
 
     float stateTime = 0;
 
+    public int CanAttackDis
+    {
+        get
+        {
+            return Mathf.Max(0, AttackDis - postionInCamp);
+        }
+    }
+
     public void Attack()
     {
         animator.SetBool("attacking", true);
-        Debug.Log("Attack!");
+        Buff buff = new Buff();
+        buff.owner = this;
+        if (IsEnemy)
+        {
+            buff.target = gameMode.ourCamp.GetTargetRamdom(CanAttackDis);
+        }
+        else
+        {
+            buff.target = gameMode.enemyCamp.GetTargetRamdom(CanAttackDis);
+        }
+        buff.attackOriDamge = currentAttackDamage;
+        buff.skillRate = 1;
+        gameMode.ApplyBuff(buff);
 
     }
     public void Idle()
     {
-        //animator.Set
         animator.SetBool("walking", false);
         animator.SetBool("attacking", false);
-   
-        Debug.Log("Idle!");
     }
     public void Walk()
     {
         animator.SetBool("walking", true);
-        Debug.Log("Walk!");
 
+    }
+
+    public void CheckDeath()
+    {
+        if(State != 3 && currentHP <= 0)
+        {
+            State = 3;
+            stateTime = 0;
+            animator.SetBool("died", true);
+        }
+    }
+
+    public bool HasTarget()
+    {
+        return otherCamp.GetTargetRamdom(CanAttackDis);
+    }
+
+    public void DestroyCharacter()
+    {
+        Debug.Log("Dead:" + CharacterUID);
+        gameMode.DestroyCharacter(CharacterUID);
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckDeath();
         if(State == 0)//静止
         {
             if (!IsInFight)
@@ -145,7 +232,7 @@ public class Character : MonoBehaviour
             else
             {
                 stateTime = stateTime + Time.deltaTime;
-                if (stateTime > AttackInterval)
+                if (stateTime > AttackInterval && HasTarget())
                 {
                     State = 2;
                     stateTime = 0;
@@ -170,6 +257,14 @@ public class Character : MonoBehaviour
                 State = 0;
                 stateTime = 0;
                 Idle();
+            }
+        }
+        else if (State == 3)//死亡
+        {
+            stateTime = stateTime + Time.deltaTime;
+            if(stateTime > deadClipTime)
+            {
+                DestroyCharacter();
             }
         }
     }

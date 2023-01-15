@@ -7,17 +7,17 @@ namespace Assets.Script
     {
         public override void ReCalculPos()
         {
-            for (int i = 0; i < members.Count; i++)
+            foreach(var pair in members)
             {
-                Character member = members[i];
-
-                if (member.Pos > Pos + characterOffset[i])
+                Character member = pair.Value;
+                int index = pair.Key;
+                if (member.Pos > Pos + characterOffset[index])
                 {
                     member.Pos =  -member.Speed * Time.deltaTime + member.Pos;
                 }
                 else
                 {
-                    float pos = Pos + characterOffset[i];
+                    float pos = Pos + characterOffset[index];
                     member.Pos = pos;
                 }
             }

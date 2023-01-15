@@ -62,7 +62,7 @@ namespace Assets.Script
         public bool IsInFight(int pos)
         {
             var chara = members[pos];
-            if(chara.Pos == Pos + characterOffset[i])
+            if(chara.Pos == Pos + characterOffset[pos])
             {
                 return true;
             }

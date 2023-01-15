@@ -36,9 +36,9 @@ namespace Assets.Script
 
         }
 
-        //根据ID 找Prefab
+        //根据ID 找Prefab,并生成，阵营通过Prefab上的IsEnemy判定
         
-        public void SpawnNewChara(int CharacterId)
+        public void SpawnNewChara(int CharacterId, int Pos)
         {
             GameObject newTarget = Instantiate(CharacterPrefab[CharacterId]);
             Character chara = newTarget.GetComponent<Character>();
@@ -51,7 +51,7 @@ namespace Assets.Script
                     return;
                 }
                 chara.Pos = enemyCampPos;
-                enemyCamp.AddChara(chara);
+                enemyCamp.AddChara(chara, Pos);
             }
             else
             {
@@ -61,63 +61,16 @@ namespace Assets.Script
                     return;
                 }
                 chara.Pos = ourCampPos;
-                ourCamp.AddChara(chara);
+                ourCamp.AddChara(chara, Pos);
             }
         }
-
-        public void CheckCampPos()
-        {
-            if(ourCamp.Pos < enemyCamp.Pos)
-            {
-                ourCamp.Pos += ourCamp.Speed * Time.deltaTime;
-                enemyCamp.Pos -= enemyCamp.Speed * Time.deltaTime;
-                return;
-            }
-            if(ourCamp.Pos > enemyCamp.Pos)
-            {
-                ourCamp.Pos = enemyCamp.Pos;
-            }
-
-            if(ourCamp.Weight >= enemyCamp.Weight)
-            {
-                if(ourCamp.Speed > enemyCamp.Speed)
-                {
-                    ourCamp.Pos += (ourCamp.Speed - enemyCamp.Speed) * Time.deltaTime;
-                    enemyCamp.Pos += (ourCamp.Speed - enemyCamp.Speed) * Time.deltaTime;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                if (ourCamp.Speed < enemyCamp.Speed)
-                {
-                    ourCamp.Pos += (ourCamp.Speed - enemyCamp.Speed) * Time.deltaTime;
-                    enemyCamp.Pos += (ourCamp.Speed - enemyCamp.Speed) * Time.deltaTime;
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
+       
 
         // Update is called once per frame
         void Update()
         {
             ourCamp.Update();
             enemyCamp.Update();
-            CheckCampPos();
-            if(ourCamp.Pos > enemyCampPos)
-            {
-                Debug.Log("YOUWIN");
-            }
-            else if(enemyCamp.Pos < ourCampPos)
-            {
-                Debug.Log("YOULOSE");
-            }
         }
     }
 }

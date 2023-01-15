@@ -10,7 +10,7 @@ namespace Assets.Script
 
         public void Click()
         {
-            GameMode.GetGameMode().SpawnNewChara(CharaID);
+            GameMode.GetGameMode().SpawnNewChara(CharaID, 0);
         }
     }
 }

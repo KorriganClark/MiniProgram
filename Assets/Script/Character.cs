@@ -1,3 +1,4 @@
+using Assets.Script;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,17 +14,18 @@ public class Character : MonoBehaviour
     public int CharacterUID;
 
     public bool IsEnemy = false;
-    public float Speed = 5;
+    public float Speed = 1;
     public float MaxHealth = 100;
-    public float Attack = 10;
+    public float AttackDamage = 10;
     public float Deffend = 2;
-    public float Weight = 5;
-    [HideInInspector]
-    public int WeaponId = 0;
+    public float AttackInterval = 1;
 
-    // 0 ¾²Ö¹ 1 ÐÐ×ß
+    [InspectorName("¹¥»÷¾àÀë")]
+    public int AttackDis = 1;
+
+    // 0 ¾²Ö¹ 1 ÐÐ×ß 2 ¹¥»÷
     [HideInInspector]
-    public int WalkState = 0;
+    public int State = 0;
     [HideInInspector]
     public Animator animator;
 
@@ -64,7 +66,20 @@ public class Character : MonoBehaviour
         }
     }
 
-    public bool IsInFight = false;
+    public bool IsInFight
+    {
+        get
+        {
+            if (IsEnemy)
+            {
+                return GameMode.GetGameMode().enemyCamp.IsInFight(postionInCamp);
+            }
+            else
+            {
+                return GameMode.GetGameMode().ourCamp.IsInFight(postionInCamp);
+            }
+        }
+    }
 
 
     private void Awake()
@@ -76,11 +91,61 @@ public class Character : MonoBehaviour
         }
     }
 
+    float stateTime = 0;
+
+    public void Attack()
+    {
+
+    }
+    public void Idle()
+    {
+
+    }
+    public void Walk()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (gameObject)
+        if(State == 0)//¾²Ö¹
         {
+            if (!IsInFight)
+            {
+                State = 1;
+                stateTime = 0;
+                Walk();
+            }
+            else
+            {
+                stateTime = stateTime + Time.deltaTime;
+                if (stateTime > AttackInterval)
+                {
+                    State = 2;
+                    stateTime = 0;
+                    Attack();
+                }
+            }
+        }
+        else if(State == 2)//¹¥»÷
+        {
+            stateTime = stateTime + Time.deltaTime;
+            if (stateTime > 1)
+            {
+                State = 0;
+                stateTime = 0;
+                Idle();
+            }
+        }
+        else if(State == 1)//×ßÂ·
+        {
+            if (IsInFight)
+            {
+                State = 0;
+                stateTime = 0;
+                Idle();
+            }
         }
     }
 }

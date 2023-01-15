@@ -8,11 +8,13 @@ namespace Assets.Script
     {
         public OurCamp ourCamp;
         public EnemyCamp enemyCamp;
+        public GameLevelMode levelMode;
 
         public static GameMode GetGameMode()
         {
             return GameObject.Find("GameMode").GetComponent<GameMode>();
         }
+        
 
         public int ourCampPos = 0;
         public int enemyCampPos = 100;
@@ -27,13 +29,14 @@ namespace Assets.Script
         {
             ourCamp = GetComponent<OurCamp>();
             enemyCamp = GetComponent<EnemyCamp>();
+            levelMode = GetComponent<GameLevelMode>();
         }
 
-        public void StarGame(int level)
+        public void StarGame(int level,LevelData data)
         {
             ourCamp.Pos = ourCampPos;
             enemyCamp.Pos = enemyCampPos;
-
+            levelMode.StarGame(level,data);
         }
 
         //根据ID 找Prefab,并生成，阵营通过Prefab上的IsEnemy判定

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Script
@@ -7,18 +8,50 @@ namespace Assets.Script
     {
         public override void ReCalculPos()
         {
-            foreach(var pair in members)
+            Character target;
+            if (members.Count <= 0)
+            {
+                return;
+            }
+            while (!members.TryGetValue(0, out target))
+            {
+                var temp = new Dictionary<int, Character>(members);
+                members.Clear();
+                foreach (var pair in temp)
+                {
+                    members[pair.Key - 1] = pair.Value;
+                    pair.Value.postionInCamp = pair.Key - 1;
+                }
+            }
+
+            foreach (var pair in members)
             {
                 Character member = pair.Value;
-                int index = pair.Key;
-                if (member.Pos > Pos + characterOffset[index])
+                if(member == null)
                 {
-                    member.Pos =  -member.Speed * Time.deltaTime + member.Pos;
+                    continue;
+                }
+                int index = pair.Key;
+                if (member.Pos > Pos + characterOffset[index] + member.Speed * Time.deltaTime)
+                {
+                    member.Pos = -member.Speed * Time.deltaTime + member.Pos;
                 }
                 else
                 {
-                    float pos = Pos + characterOffset[index];
-                    member.Pos = pos;
+                    member.Pos = Pos + characterOffset[index];
+                }
+                float deltaOffset = Time.deltaTime * member.Speed * Mathf.Abs(member.Depth - characterDepths[index]) / (member.Pos - Pos - characterOffset[index]);
+                if (member.Depth < characterDepths[index] - deltaOffset)
+                {
+                    member.Depth += deltaOffset;
+                }
+                else if (member.Depth > characterDepths[index] + deltaOffset)
+                {
+                    member.Depth -= deltaOffset;
+                }
+                else
+                {
+                    member.Depth = characterDepths[index];
                 }
             }
         }

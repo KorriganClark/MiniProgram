@@ -86,27 +86,18 @@ namespace Assets.Script
         {
             if(members.Count <= 0 || dis <= 0)
                 return null;
-            int front = -1;
-            for(int i = 0; i < MaxCount; i++)
-            {
-                if(GetFightingChara(i) != null)
-                {
-                    front = i;break;
-                }
-            }
-            if(front == -1)
-            {
-                return null;
-            }
-            //dis -= front;
             var list = new List<Character>();
-            for(int i = front; i < front + dis; i++)
+            for(int i = 0; i < dis; i++)
             {
                 Character target = GetFightingChara(i);
                 if (target != null)
                 {
                     list.Add(target);
                 }
+            }
+            if(list.Count <= 0)
+            {
+                return null;
             }
             int pos = Random.Range(0, list.Count);
             return list[pos];
@@ -118,6 +109,10 @@ namespace Assets.Script
         public override void ReCalculPos()
         {
             Character target;
+            if(members.Count <= 0)
+            {
+                return;
+            }
             while(!members.TryGetValue(0,out target))
             {
                 var temp = new Dictionary<int, Character>(members);
@@ -131,6 +126,10 @@ namespace Assets.Script
             foreach (var pair in members)
             {
                 Character member = pair.Value;
+                if (member == null)
+                {
+                    continue;
+                }
                 int index = pair.Key;
                 if (member.Pos < Pos + characterOffset[index])
                 {

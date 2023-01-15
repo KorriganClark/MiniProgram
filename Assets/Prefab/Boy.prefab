@@ -127,7 +127,7 @@ MonoBehaviour:
   attackClip: {fileID: 7400000, guid: 7f7676b2927d09b4994f945fb5293f69, type: 2}
   deadClip: {fileID: 7400000, guid: 3e53190666c972041948b09ffdd123b4, type: 2}
   skillClips: []
-  AttackDis: 3
+  AttackDis: 2
   currentHP: 0
   currentAttackDamage: 0
   currentDeffend: 0

@@ -30,7 +30,7 @@ namespace Assets.Script
             }
             public bool Finished()
             {
-                if (target == null)
+                if (target == null || target == null)
                 {
                     return true;
                 }

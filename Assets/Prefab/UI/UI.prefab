@@ -886,6 +886,8 @@ MonoBehaviour:
   level: 2
   defaultId: 0
   firstMoney: 0
+  bg1: {fileID: 0}
+  bg2: {fileID: 0}
 --- !u!1 &5502500376463653828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,6 +1316,8 @@ MonoBehaviour:
   level: 1
   defaultId: 0
   firstMoney: 100
+  bg1: {fileID: 21300000, guid: bbb3ac0e8c6aaa74fb80bafa8061b64f, type: 3}
+  bg2: {fileID: 21300000, guid: a05faee30da6a574caeb652a4e791152, type: 3}
 --- !u!1 &6547569755277204526
 GameObject:
   m_ObjectHideFlags: 0

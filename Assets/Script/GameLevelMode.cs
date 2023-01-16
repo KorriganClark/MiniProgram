@@ -193,6 +193,11 @@ namespace Assets.Script
         {
             configPlayerData = new PlayerData();
         }
+
+        public GameObject battleResult;
+        public GameObject victory;
+        public GameObject fail;
+
         void Update()
         {
             if(state == 0)
@@ -203,6 +208,8 @@ namespace Assets.Script
             {
                 state = 0;
                 ResetLevel();
+                battleResult.SetActive(true);
+                victory.SetActive(true);
                 //胜利事件
                 return;
             }
@@ -210,6 +217,8 @@ namespace Assets.Script
             {
                 state = 0;
                 ResetLevel();
+                battleResult.SetActive(true);
+                fail.SetActive(true);
                 //失败事件
                 return;
             }

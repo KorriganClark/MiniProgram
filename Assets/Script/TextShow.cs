@@ -27,6 +27,7 @@ namespace Assets.Script
             int value = 0;
             if(type == 1)
             {
+                if(gameLevel.playerData != null)
                 value = gameLevel.playerData.money;
             }
             else

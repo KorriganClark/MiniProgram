@@ -112,6 +112,9 @@ namespace Assets.Script
                 case BuffType.Damage:
                     BuffMgr.DealAttack(buff);
                     break;
+                case BuffType.AddHealth:
+                    BuffMgr.DealAddHealth(buff);
+                    break;
             }
         }
 

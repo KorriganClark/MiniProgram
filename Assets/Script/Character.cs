@@ -3,7 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum Nat
+{
+    Red,
+    Bule,
+    Green,
+    Gray
+}
 
 public class Character : MonoBehaviour
 {
@@ -34,6 +40,8 @@ public class Character : MonoBehaviour
 
     public GameObject bullet;
 
+    
+    public Nat nat = Nat.Gray;
     //运行时属性
     public float currentHP;
     public float currentAttackDamage;

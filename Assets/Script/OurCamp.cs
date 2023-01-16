@@ -43,6 +43,11 @@ namespace Assets.Script
 
         public virtual void AddChara(Character chara, int position)
         {
+            if (members.TryGetValue(position,out chara))
+            {
+                return;
+            }
+
             members.Add(position, chara);
             chara.postionInCamp = position;
             chara.Depth = characterDepths[position];

@@ -18,6 +18,7 @@ namespace Assets.Script
             newData.enemyList = new List<List<Tuple<int, float>>>();
             newData.levelId = level;
             newData.playerId = defaultId;
+            newData.firstMoney = firstMoney;
             int index = 0;
             newData.enemyList.Add(new List<Tuple<int, float>>());
             for(int i = 0;i < enemyList.Count;i++)

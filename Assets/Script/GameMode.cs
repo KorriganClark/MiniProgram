@@ -26,12 +26,20 @@ namespace Assets.Script
         public int NowCharaIndex = 0;
         public Dictionary<int, Character> charaMap = new Dictionary<int, Character>();
 
+        private List<BoxCollider2D> colliders = new List<BoxCollider2D>();
         // Use this for initialization
         void Awake()
         {
             ourCamp = GetComponent<OurCamp>();
             enemyCamp = GetComponent<EnemyCamp>();
             levelMode = GetComponent<GameLevelMode>();
+
+            var list = ourCamp.PositionPoints;
+            foreach(var go in list)
+            {
+                var collider = go.transform.GetChild(0).gameObject.AddComponent<BoxCollider2D>();
+                colliders.Add(collider);
+            }
         }
 
         public void StarGame(int level, LevelData data)
@@ -124,6 +132,28 @@ namespace Assets.Script
             ourCamp.Update();
             enemyCamp.Update();
             BulletMgr.Update();
+            CheckGetPos();
+        }
+
+        public void CheckGetPos()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                for (int i = 0;i< colliders.Count; i++)
+                {
+                    BoxCollider2D collider = colliders[i];
+                    if (collider.OverlapPoint(pos))
+                    {
+                        if (levelMode.isSelect)
+                        {
+                            levelMode.OnCharaSelect(i);
+                        }
+                    }
+                }
+
+                
+            }
         }
     }
 }

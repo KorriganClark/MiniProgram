@@ -55,7 +55,7 @@ namespace Assets.Script
             gameMode.SpawnNewChara(data.playerId, 0);
             playerData.PosData[0] = true;
             playerData.ourNum++;
-
+            playerData.money = data.firstMoney;
             selectPrefab.transform.gameObject.SetActive(false);
         }
         //使用道具

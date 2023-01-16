@@ -92,13 +92,16 @@ namespace Assets.Script
                 if (target.IsEnemy)
                 {
                     enemyCamp.members.Remove(target.postionInCamp);
+                    levelMode.OnEnemyCharaDeath(target);
                 }
                 else
                 {
                     ourCamp.members.Remove(target.postionInCamp);
+                    levelMode.OnOurCharaDeath(target);
                 }
 
                 DestroyImmediate(target.gameObject);
+                
             }
         }
 

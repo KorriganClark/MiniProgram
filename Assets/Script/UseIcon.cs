@@ -31,7 +31,7 @@ namespace Assets.Script
                 gameLevel.UseSkill(id);
             }
         }
-        void Awake()
+        void Start()
         {
             gameLevel.setPlayerDataConfig(type, id, cost);
         }

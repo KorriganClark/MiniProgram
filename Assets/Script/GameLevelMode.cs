@@ -31,13 +31,16 @@ namespace Assets.Script
         {
             InitSelectLevel(level, data);
         }
-        public void OnEnemyCharaDeath(int posId)
+        public void OnEnemyCharaDeath(Character target)
         {
-            playerData.OtherPosData[posId] = false;
+            playerData.enemyNum--;
+            playerData.money += target.enemyDeathPoint;
+
         }
-        public void OnOurCharaDeath(int posId)
+        public void OnOurCharaDeath(Character target)
         {
-            playerData.PosData[posId] = false;
+            playerData.PosData[target.postionInCamp] = false;
+           
         }
         //初始化关卡
         public void InitSelectLevel(int level, LevelData data)
@@ -46,6 +49,9 @@ namespace Assets.Script
             curLevelData = data;
             CurEnemyLevel = 0;
             state = 1;
+            //生成默认角色
+            gameMode.SpawnNewChara(data.playerId, 0);
+            playerData.PosData[0] = true;
         }
         //使用道具
         public void UseItem(int ItemId)
@@ -129,15 +135,7 @@ namespace Assets.Script
             {
                 return false;
             }
-            int length = curLevelData.enemyList[CurEnemyLevel].Count();
-            for(int i = 0; i < length; i++)
-            {
-                if(playerData.OtherPosData[i] == true)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return playerData.enemyNum == 0;
         }
         //检测胜利
         public bool checkVictory()
@@ -146,15 +144,7 @@ namespace Assets.Script
             {
                 return false;
             }
-            int length = curLevelData.enemyList[CurEnemyLevel].Count();
-            for (int i = 0; i < length; i++)
-            {
-                if (playerData.OtherPosData[i] == true)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return playerData.enemyNum == 0;
         }
         public bool checkLoss()
         {
@@ -164,10 +154,11 @@ namespace Assets.Script
         public void SpawnEnemyLevel()
         {
             CurEnemyLevel = CurEnemyLevel + 1;
-            int length = curLevelData.enemyList[CurEnemyLevel].Count();
+            int length = curLevelData.enemyList[CurEnemyLevel - 1].Count();
             for (int i = 0; i < length; i++)
             {
-                gameMode.SpawnNewChara(curLevelData.enemyList[CurEnemyLevel][i], i);
+                gameMode.SpawnNewChara(curLevelData.enemyList[CurEnemyLevel - 1][i].Item1, i);
+                playerData.enemyNum ++;
                 playerData.OtherPosData[i] = true;
             }
         }
@@ -218,7 +209,7 @@ namespace Assets.Script
     //关卡数据，目前只有怪波次
     public class LevelData
     {
-        public List<List<int>> enemyList;
+        public List<List<Tuple<int,float>>> enemyList;
         public int levelNum 
         {
             get
@@ -227,6 +218,10 @@ namespace Assets.Script
             }
         }
         public int levelId;
+
+        public int playerId;
+
+        public int firstMoney;
     }
     //玩家数据，包含技能可用数据，每个位置上是否已经创建角色/怪，道具和角色花费
     public class PlayerData
@@ -238,6 +233,7 @@ namespace Assets.Script
         public int[] charaCost = new int[maxSize];
         public bool[] PosData = new bool[maxSize];
         public bool[] OtherPosData = new bool[maxSize];
+        public int enemyNum = 0;
         public bool CheckCharaCost(int charaId)
         {
             return money > charaCost[charaId];

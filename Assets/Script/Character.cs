@@ -51,6 +51,8 @@ public class Character : MonoBehaviour
     //队伍中的站位
     public int postionInCamp = -1;
 
+    public int enemyDeathPoint = 10;
+
     private float pos = 0;
     public float Pos
     {

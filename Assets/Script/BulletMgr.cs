@@ -21,11 +21,19 @@ namespace Assets.Script
             public float currentTime = 0;
             public void Update()
             {
+                if(spwaner == null || target == null)
+                {
+                    return;
+                }
                 currentTime += Time.deltaTime;
                 bullet.transform.position = (spwaner.transform.position * (totalTime - currentTime) + target.transform.position * currentTime) / totalTime;
             }
             public bool Finished()
             {
+                if (target == null)
+                {
+                    return true;
+                }
                 return Vector3.Distance(bullet.transform.position, target.transform.position) < 0.1f;
             }
         }
@@ -39,7 +47,7 @@ namespace Assets.Script
             task.target = target;
             task.totalTime = time;
             task.bullet = GameObject.Instantiate(bullet);
-
+            tasks.Add(task);
         }
 
         public static void Update()

@@ -42,7 +42,7 @@ namespace Assets.Script
         public void SetPositionEffect(int pos, bool isSeletect)
         {
             var go = ourCamp.PositionPoints[pos];
-            go.transform.GetChild(1).gameObject.SetActive(isSeletect);
+            //go.transform.GetChild(1).gameObject.SetActive(isSeletect);
             go.transform.GetChild(2).gameObject.SetActive(isSeletect);
         }
 
@@ -117,6 +117,7 @@ namespace Assets.Script
         {
             ourCamp.Update();
             enemyCamp.Update();
+            BulletMgr.Update();
         }
     }
 }

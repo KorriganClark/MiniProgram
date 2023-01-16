@@ -118,7 +118,7 @@ MonoBehaviour:
   AttackAuido: {fileID: 0}
   IsEnemy: 0
   Speed: 0.2
-  MaxHealth: 20
+  MaxHealth: 100
   AttackDamage: 10
   Deffend: 2
   AttackInterval: 1

@@ -31,6 +31,7 @@ public class Character : MonoBehaviour
     public AnimationClip attackClip;
     public AnimationClip deadClip;
     public List<AnimationClip> skillClips;
+    public SpriteRenderer blood;
     [InspectorName("¹¥»÷¾àÀë")]
     public int AttackDis = 1;
 
@@ -239,6 +240,12 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (blood)
+        {
+            var scale = blood.transform.localScale;
+            scale.x = currentHP / MaxHealth;
+            blood.transform.localScale = scale;
+        }
         CheckDeath();
         if(State == 0)//¾²Ö¹
         {

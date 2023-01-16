@@ -12,10 +12,10 @@ namespace Assets.Script
         public int level;
         public int defaultId = 0;
         public int firstMoney = 0;
-        public Sprite bg;
+        public Texture bg;
         public void Click()
         {
-            GameMode.GetGameMode().levelMode.backGround.sprite = bg;
+            GameMode.GetGameMode().levelMode.backGround.texture = bg;
             LevelData newData = new LevelData();
             newData.enemyList = new List<List<Tuple<int, float>>>();
             newData.levelId = level;

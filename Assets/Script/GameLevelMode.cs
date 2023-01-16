@@ -28,7 +28,7 @@ namespace Assets.Script
         public LevelData curLevelData;
         public int CurEnemyLevel = 0;
 
-        public Image backGround;
+        public RawImage backGround;
         //关卡状态 0 - 未开始 1 -战斗中
         public int state = 0;
         public void StarGame(int level,LevelData data)

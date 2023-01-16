@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5817628676749859514}
   - component: {fileID: 5817628676749859493}
   m_Layer: 0
-  m_Name: wETest
+  m_Name: WeTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkAudio: {fileID: 0}
   AttackAuido: {fileID: 0}
-  IsEnemy: 1
+  IsEnemy: 0
   Speed: 0.2
   MaxHealth: 20
   AttackDamage: 10
@@ -128,6 +128,8 @@ MonoBehaviour:
   deadClip: {fileID: 7400000, guid: df379e67234a06e408bc333c51c02a12, type: 2}
   skillClips: []
   AttackDis: 1
+  IsEmitter: 0
+  bullet: {fileID: 0}
   currentHP: 0
   currentAttackDamage: 0
   currentDeffend: 0

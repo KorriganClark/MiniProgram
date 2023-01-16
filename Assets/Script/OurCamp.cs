@@ -40,12 +40,12 @@ namespace Assets.Script
 
         public Camp (){}
 
-        public virtual void AddChara(Character chara, int index)
+        public virtual bool AddChara(Character chara, int index)
         {
             Character temp;
             if (members.TryGetValue(index, out temp))
             {
-                return;
+                return false;
             }
 
             members.Add(index, chara);
@@ -55,6 +55,7 @@ namespace Assets.Script
             pos.z = -5;
             chara.transform.localPosition = pos;
             chara.Depth = 0;
+            return true;
         }
 
         public virtual void DeleteChara(int pos)

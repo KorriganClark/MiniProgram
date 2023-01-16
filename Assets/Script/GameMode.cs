@@ -37,8 +37,15 @@ namespace Assets.Script
             levelMode.StarGame(level,data);
         }
 
+        public void SetPositionEffect(int pos, bool isSeletect)
+        {
+            var go = ourCamp.PositionPoints[pos];
+            go.transform.GetChild(1).gameObject.SetActive(isSeletect);
+            go.transform.GetChild(2).gameObject.SetActive(isSeletect);
+        }
+
         //根据ID 找Prefab,并生成，阵营通过Prefab上的IsEnemy判定
-        
+
         public void SpawnNewChara(int CharacterId, int Pos)
         {
             GameObject newTarget = Instantiate(CharacterPrefab[CharacterId]);
@@ -49,11 +56,15 @@ namespace Assets.Script
             {
                 if (enemyCamp.IsFull)
                 {
-                    GameObject.Destroy(chara.gameObject);
+                    GameObject.DestroyImmediate(chara.gameObject);
                     return;
                 }
                 chara.Pos = enemyCampPos;
-                enemyCamp.AddChara(chara, Pos);
+                var res = enemyCamp.AddChara(chara, Pos);
+                if (!res)
+                {
+                    DestroyImmediate(chara.gameObject);
+                }
             }
             else
             {
@@ -63,7 +74,11 @@ namespace Assets.Script
                     return;
                 }
                 chara.Pos = ourCampPos;
-                ourCamp.AddChara(chara, Pos);
+                var res = ourCamp.AddChara(chara, Pos);
+                if (!res)
+                {
+                    DestroyImmediate(chara.gameObject);
+                }
             }
         }
 

@@ -43,7 +43,7 @@ namespace Assets.Script
         {
             var go = ourCamp.PositionPoints[pos];
             //go.transform.GetChild(1).gameObject.SetActive(isSeletect);
-            go.transform.GetChild(2).gameObject.SetActive(isSeletect);
+            go.transform.GetChild(1).gameObject.SetActive(isSeletect);
         }
 
         //根据ID 找Prefab,并生成，阵营通过Prefab上的IsEnemy判定

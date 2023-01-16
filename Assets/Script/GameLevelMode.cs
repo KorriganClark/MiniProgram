@@ -39,6 +39,7 @@ namespace Assets.Script
         }
         public void OnOurCharaDeath(Character target)
         {
+            playerData.ourNum--;
             playerData.PosData[target.postionInCamp] = false;
            
         }
@@ -52,6 +53,7 @@ namespace Assets.Script
             //生成默认角色
             gameMode.SpawnNewChara(data.playerId, 0);
             playerData.PosData[0] = true;
+            playerData.ourNum++;
         }
         //使用道具
         public void UseItem(int ItemId)
@@ -91,7 +93,7 @@ namespace Assets.Script
         //选位置结束
         public void OnCharaSelect(int posId)
         {
-            selectUI.QuitSelect();
+            QuitSelect();
             if (CurSelectCharaId == -1 || playerData.useChara(CurSelectCharaId,posId) == false)
             {
                 //todo tips
@@ -100,6 +102,7 @@ namespace Assets.Script
             //生成人物，标记数据
             gameMode.SpawnNewChara(CurSelectCharaId, posId);
             playerData.PosData[posId] = true;
+            playerData.ourNum++;
             selectUI.OnSelect(posId);
         }
         public void EnterSelect()
@@ -109,7 +112,12 @@ namespace Assets.Script
                 return;
             }
             isSelect = true;
-            selectUI.EnterSelect(playerData.PosData);
+            bool[] list = new bool[100];
+            foreach (var pair in gameMode.ourCamp.members)
+            {
+                list[pair.Value.postionInCamp] = true;
+            }
+            selectUI.EnterSelect(list,gameMode.ourCamp.MaxCount);
         }
         public void QuitSelect()
         {
@@ -148,7 +156,7 @@ namespace Assets.Script
         }
         public bool checkLoss()
         {
-            return false;
+            return playerData.ourNum == 0;
         }
         //生成新一波怪
         public void SpawnEnemyLevel()
@@ -191,18 +199,36 @@ namespace Assets.Script
             if (checkVictory())
             {
                 state = 0;
+                ResetLevel();
                 //胜利事件
                 return;
             }
             if (checkLoss())
             {
                 state = 0;
+                ResetLevel();
                 //失败事件
                 return;
             }
             if (checkCanSpawnEnemy())
             {
                 SpawnEnemyLevel();
+            }
+        }
+        public void ResetLevel()
+        {
+            List<int> desObj = new List<int>();
+            foreach (var pair in gameMode.ourCamp.members)
+            {
+                desObj.Add(pair.Value.CharacterUID);
+            }
+            foreach (var pair in gameMode.enemyCamp.members)
+            {
+                desObj.Add(pair.Value.CharacterUID);
+            }
+            for(int i = 0;i<desObj.Count;i++)
+            {
+                gameMode.DestroyCharacter(desObj[i]);
             }
         }
     }
@@ -227,20 +253,21 @@ namespace Assets.Script
     public class PlayerData
     {
         public int money = 0;
-        const int maxSize = 10;
+        const int maxSize = 1000;
         public int[] Skill = new int[maxSize];
         public int[] ItemCost = new int[maxSize];
         public int[] charaCost = new int[maxSize];
         public bool[] PosData = new bool[maxSize];
         public bool[] OtherPosData = new bool[maxSize];
         public int enemyNum = 0;
+        public int ourNum = 0;
         public bool CheckCharaCost(int charaId)
         {
-            return money > charaCost[charaId];
+            return money >= charaCost[charaId];
         }
         public bool CheckItemCost(int ItemId)
         {
-            return money > ItemCost[ItemId];
+            return money >= ItemCost[ItemId];
         }
         public bool CheckSkillCost(int skillId)
         {
@@ -303,17 +330,45 @@ namespace Assets.Script
     //选位置UI
     public class SelectUI
     {
+        bool[] tempList;
+        int maxSize = 0;
+        public GameMode gameMode
+        {
+            get
+            {
+                return GameMode.GetGameMode();
+            }
+        }
         public void GetSelectUI()
         {
 
         }
-        public void EnterSelect(bool[] list)
+        public void EnterSelect(bool[] list,int size)
         {
 
+            tempList = list;
+            maxSize = size;
+            for(int i = 0;i < maxSize; i ++)
+            {
+                if(list[i] == false)
+                {
+                    Debug.Log("select true:" + i);
+                    gameMode.SetPositionEffect(i, true);
+                }
+               
+            }
         }
         public void QuitSelect()
         {
+            for (int i = 0; i < maxSize; i++)
+            {
+                if (tempList[i] == false)
+                {
+                    Debug.Log("select false:" + i);
+                    gameMode.SetPositionEffect(i, false);
+                }
 
+            }
         }
         public void OnSelect(int pos)
         {

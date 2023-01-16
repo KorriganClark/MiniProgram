@@ -28,6 +28,12 @@ public class Character : MonoBehaviour
     [InspectorName("攻击距离")]
     public int AttackDis = 1;
 
+
+    [InspectorName("远程攻击")]
+    public bool IsEmitter = false;
+
+    public GameObject bullet;
+
     //运行时属性
     public float currentHP;
     public float currentAttackDamage;
@@ -183,7 +189,10 @@ public class Character : MonoBehaviour
         buff.attackOriDamge = currentAttackDamage;
         buff.skillRate = 1;
         gameMode.ApplyBuff(buff);
-
+        if (IsEmitter)
+        {
+            BulletMgr.SpawnBullet(buff.owner, buff.target, bullet, 1);
+        }
     }
     public void Idle()
     {

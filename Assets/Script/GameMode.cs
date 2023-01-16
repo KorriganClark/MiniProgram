@@ -21,6 +21,8 @@ namespace Assets.Script
 
 
         public List<GameObject> CharacterPrefab;
+        public List<GameObject> BulletPrefab;
+
         public int NowCharaIndex = 0;
         public Dictionary<int, Character> charaMap = new Dictionary<int, Character>();
 

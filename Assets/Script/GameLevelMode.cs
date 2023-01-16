@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Script
 {
@@ -26,6 +27,8 @@ namespace Assets.Script
         public int CurSelectCharaId = -1;
         public LevelData curLevelData;
         public int CurEnemyLevel = 0;
+
+        public Image backGround;
         //关卡状态 0 - 未开始 1 -战斗中
         public int state = 0;
         public void StarGame(int level,LevelData data)

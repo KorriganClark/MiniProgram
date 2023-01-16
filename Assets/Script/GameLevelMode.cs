@@ -45,6 +45,7 @@ namespace Assets.Script
             playerData = configPlayerData.Copy();
             curLevelData = data;
             CurEnemyLevel = 0;
+            state = 1;
         }
         //使用道具
         public void UseItem(int ItemId)
@@ -129,7 +130,7 @@ namespace Assets.Script
                 return false;
             }
             int length = curLevelData.enemyList[CurEnemyLevel].Count();
-            for(int i = 1; i < length; i++)
+            for(int i = 0; i < length; i++)
             {
                 if(playerData.OtherPosData[i] == true)
                 {
@@ -146,7 +147,7 @@ namespace Assets.Script
                 return false;
             }
             int length = curLevelData.enemyList[CurEnemyLevel].Count();
-            for (int i = 1; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 if (playerData.OtherPosData[i] == true)
                 {
@@ -164,9 +165,9 @@ namespace Assets.Script
         {
             CurEnemyLevel = CurEnemyLevel + 1;
             int length = curLevelData.enemyList[CurEnemyLevel].Count();
-            for (int i = 1; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
-                gameMode.SpawnNewChara(CurSelectCharaId, i);
+                gameMode.SpawnNewChara(curLevelData.enemyList[CurEnemyLevel][i], i);
                 playerData.OtherPosData[i] = true;
             }
         }
@@ -192,13 +193,19 @@ namespace Assets.Script
         }
         void Update()
         {
+            if(state == 0)
+            {
+                return;
+            }
             if (checkVictory())
             {
+                state = 0;
                 //胜利事件
                 return;
             }
             if (checkLoss())
             {
+                state = 0;
                 //失败事件
                 return;
             }
@@ -219,17 +226,18 @@ namespace Assets.Script
                 return enemyList.Count();
             }
         }
+        public int levelId;
     }
     //玩家数据，包含技能可用数据，每个位置上是否已经创建角色/怪，道具和角色花费
     public class PlayerData
     {
         public int money = 0;
         const int maxSize = 10;
-        public List<int> Skill = new List<int>(maxSize);
-        public List<int> ItemCost = new List<int>(maxSize);
-        public List<int> charaCost = new List<int>(maxSize);
-        public List<bool> PosData = new List<bool>(maxSize);
-        public List<bool> OtherPosData = new List<bool>(maxSize);
+        public int[] Skill = new int[maxSize];
+        public int[] ItemCost = new int[maxSize];
+        public int[] charaCost = new int[maxSize];
+        public bool[] PosData = new bool[maxSize];
+        public bool[] OtherPosData = new bool[maxSize];
         public bool CheckCharaCost(int charaId)
         {
             return money > charaCost[charaId];
@@ -285,7 +293,7 @@ namespace Assets.Script
         public PlayerData Copy()
         {
             PlayerData copy = new PlayerData();
-            for(int i = 1; i < maxSize - 1; i ++)
+            for(int i = 0; i < maxSize; i ++)
             {
                 copy.charaCost[i] = charaCost[i];
                 copy.ItemCost[i] = ItemCost[i];
@@ -303,7 +311,7 @@ namespace Assets.Script
         {
 
         }
-        public void EnterSelect(List<bool> list)
+        public void EnterSelect(bool[] list)
         {
 
         }

@@ -32,10 +32,8 @@ namespace Assets.Script
             levelMode = GetComponent<GameLevelMode>();
         }
 
-        public void StarGame(int level,LevelData data)
+        public void StarGame(int level, LevelData data)
         {
-            ourCamp.Pos = ourCampPos;
-            enemyCamp.Pos = enemyCampPos;
             levelMode.StarGame(level,data);
         }
 

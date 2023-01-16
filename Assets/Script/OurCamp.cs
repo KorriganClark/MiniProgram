@@ -11,11 +11,10 @@ namespace Assets.Script
 
         public List<float> characterDepths = new List<float>();
         public List<float> characterOffset = new List<float>();
-        [InspectorName("进入前线的偏移量")]
-        public float InFightOffset;
-        public int MaxCount = 5;
 
-        public float Pos;
+        public List<GameObject> PositionPoints = new List<GameObject>();
+        
+        public int MaxCount = 5;
 
         public int LeaderCharacterUID 
         {
@@ -41,16 +40,21 @@ namespace Assets.Script
 
         public Camp (){}
 
-        public virtual void AddChara(Character chara, int position)
+        public virtual void AddChara(Character chara, int index)
         {
-            if (members.TryGetValue(position,out chara))
+            Character temp;
+            if (members.TryGetValue(index, out temp))
             {
                 return;
             }
 
-            members.Add(position, chara);
-            chara.postionInCamp = position;
-            chara.Depth = characterDepths[position];
+            members.Add(index, chara);
+            chara.postionInCamp = index;
+            chara.transform.parent = PositionPoints[index].transform;
+            var pos = chara.transform.localPosition;
+            pos.z = -5;
+            chara.transform.localPosition = pos;
+            chara.Depth = 0;
         }
 
         public virtual void DeleteChara(int pos)
@@ -60,7 +64,67 @@ namespace Assets.Script
 
         public virtual void ReCalculPos()
         {
-            
+            Character target;
+            if (members.Count <= 0)
+            {
+                return;
+            }
+            while (!members.TryGetValue(0, out target))
+            {
+                var temp = new Dictionary<int, Character>(members);
+                members.Clear();
+                foreach (var pair in temp)
+                {
+                    members[pair.Key - 1] = pair.Value;
+                    Character chara = pair.Value;
+                    chara.postionInCamp = pair.Key - 1;
+                    chara.transform.parent = PositionPoints[pair.Key - 1].transform;
+                    var pos = chara.transform.localPosition;
+                    pos.z = -5;
+                    chara.transform.localPosition = pos;
+                }
+            }
+
+            foreach (var pair in members)
+            {
+                Character member = pair.Value;
+                if (member == null)
+                {
+                    continue;
+                }
+                int index = pair.Key;
+                if (Mathf.Abs(member.Pos) >  member.Speed * Time.deltaTime)
+                {
+                    if (member.Pos > 0)
+                    {
+                        member.Pos -= member.Speed * Time.deltaTime;
+                    }
+                    else
+                    {
+                        member.Pos += member.Speed * Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    member.Pos = 0;
+                }
+                float deltaOffset = Time.deltaTime * member.Speed * Mathf.Abs(member.Depth) / Mathf.Abs(member.Pos);
+                if (Mathf.Abs(member.Depth) > Mathf.Abs(deltaOffset))
+                {
+                    if (member.Depth > 0)
+                    {
+                        member.Depth -= Mathf.Abs(deltaOffset);
+                    }
+                    else
+                    {
+                        member.Depth += Mathf.Abs(deltaOffset);
+                    }
+                }
+                else
+                {
+                    member.Depth = 0;
+                }
+            }
         }
         
         //是否已就位，就位的才能进行战斗
@@ -69,7 +133,7 @@ namespace Assets.Script
             Character target;
             if (members.TryGetValue(pos, out target))
             {
-                if (target.Pos == Pos + characterOffset[pos] && target.Depth == characterDepths[pos])
+                if (target.Pos == 0 && target.Depth == 0)
                 {
                     return true;
                 }
@@ -111,55 +175,6 @@ namespace Assets.Script
     }
     public class OurCamp : Camp
     {
-        public override void ReCalculPos()
-        {
-            Character target;
-            if (members.Count <= 0)
-            {
-                return;
-            }
-            while (!members.TryGetValue(0, out target))
-            {
-                var temp = new Dictionary<int, Character>(members);
-                members.Clear();
-                foreach (var pair in temp)
-                {
-                    members[pair.Key - 1] = pair.Value;
-                    pair.Value.postionInCamp = pair.Key - 1;
-                }
-            }
-
-            foreach (var pair in members)
-            {
-                Character member = pair.Value;
-                if (member == null)
-                {
-                    continue;
-                }
-                int index = pair.Key;
-                if (member.Pos < Pos + characterOffset[index] - member.Speed * Time.deltaTime)
-                {
-                    member.Pos += member.Speed * Time.deltaTime;
-                }
-                else
-                {
-                    member.Pos = Pos + characterOffset[index];
-                }
-                float deltaOffset = Time.deltaTime * member.Speed * Mathf.Abs(member.Depth - characterDepths[index]) / (member.Pos - Pos - characterOffset[index]);
-                if (member.Depth < characterDepths[index] - deltaOffset)
-                {
-                    member.Depth += deltaOffset;
-                }
-                else if (member.Depth > characterDepths[index] + deltaOffset)
-                {
-                    member.Depth -= deltaOffset;
-                }
-                else
-                {
-                    member.Depth = characterDepths[index];
-                }
-            }
-        }
 
         // Update is called once per frame
         public void Update()

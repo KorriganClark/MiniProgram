@@ -50,15 +50,15 @@ public class Character : MonoBehaviour
     {
         get
         {
-            return pos;
+            return gameObject.transform.localPosition.x;
         }
         set
         {
             pos = value;
 
-            Vector3 vet3 = gameObject.transform.position;
+            Vector3 vet3 = gameObject.transform.localPosition;
             vet3.x = pos;
-            gameObject.transform.position = vet3;
+            gameObject.transform.localPosition = vet3;
         }
     }
 
@@ -67,15 +67,15 @@ public class Character : MonoBehaviour
     {
         get
         {
-            return depth;
+            return gameObject.transform.localPosition.y;
         }
         set
         {
             depth = value;
 
-            Vector3 vet3 = gameObject.transform.position;
+            Vector3 vet3 = gameObject.transform.localPosition;
             vet3.y = depth;
-            gameObject.transform.position = vet3;
+            gameObject.transform.localPosition = vet3;
         }
     }
 

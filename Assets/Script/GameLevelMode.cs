@@ -30,6 +30,7 @@ namespace Assets.Script
         public int state = 0;
         public void StarGame(int level,LevelData data)
         {
+            ResetLevel();
             InitSelectLevel(level, data);
         }
         public void OnEnemyCharaDeath(Character target)

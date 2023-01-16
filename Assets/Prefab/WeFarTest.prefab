@@ -127,9 +127,11 @@ MonoBehaviour:
   attackClip: {fileID: 7400000, guid: d7bb063fe45bd8644993eac48fe51ccd, type: 2}
   deadClip: {fileID: 7400000, guid: df379e67234a06e408bc333c51c02a12, type: 2}
   skillClips: []
-  AttackDis: 1
+  blood: {fileID: 0}
+  AttackDis: 10
   IsEmitter: 1
   bullet: {fileID: 2490367866321121450, guid: 4324a923bf6c8d04794b86eab592fb67, type: 3}
+  nat: 3
   currentHP: 0
   currentAttackDamage: 0
   currentDeffend: 0
@@ -137,3 +139,4 @@ MonoBehaviour:
   State: 0
   animator: {fileID: 5817628676749859514}
   postionInCamp: -1
+  enemyDeathPoint: 10

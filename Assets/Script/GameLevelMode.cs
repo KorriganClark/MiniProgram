@@ -18,6 +18,7 @@ namespace Assets.Script
         }
         //关卡数据
         public PlayerData playerData;
+        public GameObject selectPrefab;
         //配置数据
         public PlayerData configPlayerData;
         public SelectUI selectUI = new SelectUI();
@@ -54,6 +55,8 @@ namespace Assets.Script
             gameMode.SpawnNewChara(data.playerId, 0);
             playerData.PosData[0] = true;
             playerData.ourNum++;
+
+            selectPrefab.transform.gameObject.SetActive(false);
         }
         //使用道具
         public void UseItem(int ItemId)
